@@ -14,13 +14,15 @@ var User = require('../models/User');
 
 users.use(cors());
 process.env.SECRET_KEY = 'secret';
-user.route('/').get(function (req, res) {
-  User.find().then(function (users) {
-    return res.json(users);
-  })["catch"](function (err) {
-    return res.status(400).json('Error : ' + err);
-  });
-});
+/*
+user.route('/').get((req, res) => {
+    User.find()
+       .then(users => res.json(users))
+       .catch(err => res.status(400).json('Error : '+err))
+})
+
+*/
+
 users.route('/register').post(function (req, res) {
   var today = new Date();
   var userData = {

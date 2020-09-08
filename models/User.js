@@ -7,38 +7,33 @@ const userSchemer = new Schema(
   {
     first_name: {
       type: String,
-      required: true,
       trim: true,
       minlength: 2,
     },
     last_name: {
       type: String,
-      required: true,
       trim: true,
       minlength: 2,
     },
     username: {
       type: String,
-      required: true,
       trim: true,
       minlength: 5,
     },
     email: {
       type: String,
-      required: true,
       unique: true,
       trim: true,
       minlength: 2,
     },
     age: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
       minlength: 2,
     },
     password: {
       type: String,
-      required: true,
       trim: true,
       minlength: 2,
     },
@@ -51,3 +46,6 @@ const userSchemer = new Schema(
   { timestamps: true }
 );
 
+const User = mongoose.model('User', userSchemer)
+
+module.exports = User
