@@ -5,16 +5,7 @@ const Schema = mongoose.Schema
 
 const userSchemer = new Schema(
   {
-    first_name: {
-      type: String,
-      trim: true,
-      minlength: 2,
-    },
-    last_name: {
-      type: String,
-      trim: true,
-      minlength: 2,
-    },
+    
     username: {
       type: String,
       trim: true,
@@ -37,10 +28,7 @@ const userSchemer = new Schema(
       trim: true,
       minlength: 2,
     },
-    created : {
-      type : Date,
-      defaultValue : Date.now
-    }
+    
   },
 
   { timestamps: true }

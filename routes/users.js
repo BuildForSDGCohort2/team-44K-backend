@@ -23,8 +23,7 @@ users.route('/register').post(
     (req, res) => {
         const today = new Date()
         const userData = {
-           first_name  : req.body.first_name,
-            last_name  : req.body.last_name,
+
             username   : req.body.username,
             email      : req.body.email,
             age        : req.body.age,
@@ -36,7 +35,7 @@ users.route('/register').post(
             where: {
                 email : req.body.email
             }
-        })
+        }).exec()
         .then(user => {
             if(user){
                  bcrypt.hash(req.body.password, 10, (err,hash)=>{

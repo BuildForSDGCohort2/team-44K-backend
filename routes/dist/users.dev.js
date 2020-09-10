@@ -26,8 +26,6 @@ user.route('/').get((req, res) => {
 users.route('/register').post(function (req, res) {
   var today = new Date();
   var userData = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
     username: req.body.username,
     email: req.body.email,
     age: req.body.age,
@@ -37,7 +35,7 @@ users.route('/register').post(function (req, res) {
     where: {
       email: req.body.email
     }
-  }).then(function (user) {
+  }).exec().then(function (user) {
     if (user) {
       bcrypt.hash(req.body.password, 10, function (err, hash) {
         userData.password = hash;
