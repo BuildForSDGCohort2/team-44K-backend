@@ -7,13 +7,13 @@ var userSchemer = new Schema({
   username: {
     type: String,
     trim: true,
-    minlength: 5
+    minlength: 5,
+    required: false
   },
   email: {
     type: String,
     unique: true,
-    trim: true,
-    minlength: 2
+    trim: true
   },
   age: {
     type: String,

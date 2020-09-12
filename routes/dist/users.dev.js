@@ -15,45 +15,69 @@ var User = require('../models/User');
 users.use(cors());
 process.env.SECRET_KEY = 'secret';
 /*
-user.route('/').get((req, res) => {
+user.route('/users/').get((req, res) => {
     User.find()
-       .then(users => res.json(users))
+       .then(users => res.json(users.user))
        .catch(err => res.status(400).json('Error : '+err))
 })
 
 */
 
-users.route('/register').post(function (req, res) {
-  var today = new Date();
-  var userData = {
-    username: req.body.username,
-    email: req.body.email,
-    age: req.body.age,
-    password: req.body.password
-  };
-  User.find({
-    where: {
-      email: req.body.email
-    }
-  }).exec().then(function (user) {
-    if (user) {
-      bcrypt.hash(req.body.password, 10, function (err, hash) {
-        userData.password = hash;
-        User.create(userData).then(function (user) {
-          res.json({
-            status: user.email + 'registered'
+users.route("/register").post(function _callee(req, res) {
+  var today, userData, person, pword, newUser;
+  return regeneratorRuntime.async(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          today = new Date();
+          userData = {
+            username: req.body.username,
+            email: req.body.email,
+            age: req.body.age,
+            password: req.body.password
+          };
+          _context.next = 4;
+          return regeneratorRuntime.awrap(User.findOne({
+            email: req.body.email
+          }));
+
+        case 4:
+          person = _context.sent;
+
+          if (!person) {
+            _context.next = 7;
+            break;
+          }
+
+          return _context.abrupt("return", res.status(422).send({
+            message: "User Already exists"
+          }));
+
+        case 7:
+          _context.next = 9;
+          return regeneratorRuntime.awrap(bcrypt.hash(req.body.password, 10));
+
+        case 9:
+          pword = _context.sent;
+          userData.password = pword;
+          _context.next = 13;
+          return regeneratorRuntime.awrap(new User(userData));
+
+        case 13:
+          newUser = _context.sent;
+          _context.next = 16;
+          return regeneratorRuntime.awrap(newUser.save());
+
+        case 16:
+          res.status(201).send({
+            message: "User successfully registered"
           });
-        })["catch"](function (err) {
-          res.send('error : ' + err);
-        });
-      });
-    } else {
-      res.json({
-        error: "User already exists"
-      });
+
+        case 17:
+        case "end":
+          return _context.stop();
+      }
     }
-  })["catch"](function (err) {
-    res.send('error : ' + err);
   });
 }); //login
 
