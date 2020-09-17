@@ -5,31 +5,28 @@ const Schema = mongoose.Schema;
 
 const userSchemer = new Schema(
   {
-    
     username: {
       type: String,
+      minlength: 2,
+      maxlength: 25,
+      required: true,
       trim: true,
-      minlength: 5,
-      required:false,
     },
     email: {
       type: String,
-      unique: true,
+      required: true,
       trim: true,
-      
     },
     age: {
       type: String,
-      required: false,
       trim: true,
-      minlength: 2,
     },
     password: {
       type: String,
+      minlength: 8,
+      required: true,
       trim: true,
-      minlength: 2,
     },
-    
   },
 
   { timestamps: true }
