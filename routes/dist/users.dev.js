@@ -83,9 +83,7 @@ users.route("/register").post(function _callee(req, res) {
 
 users.route("/login").post(function (req, res) {
   User.findOne({
-    where: {
-      email: req.body.email
-    }
+    email: req.body.email
   }).then(function (user) {
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {

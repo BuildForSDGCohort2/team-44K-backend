@@ -44,11 +44,7 @@ users.route("/register").post(async (req, res) => {
 //login
 
 users.route("/login").post((req, res) => {
-  User.findOne({
-    where: {
-      email: req.body.email,
-    },
-  })
+  User.findOne({email: req.body.email,})
     .then((user) => {
       if (user) {
         if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -57,7 +53,8 @@ users.route("/login").post((req, res) => {
           });
           res.send(token);
         }
-      } else {
+      } 
+      else {
         res.status(400).json({ error: "User does not exist" });
       }
     })
