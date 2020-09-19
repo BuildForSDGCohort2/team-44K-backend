@@ -1,13 +1,14 @@
-const express = require('express')
-const users = express.Router()
-const cors = require('cors')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const express = require('express');
+const users = express.Router();
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { check, validationResult } = require("express-validator");
 
-const User = require('../models/User')
-users.use(cors())
+const User = require('../models/User');
+users.use(cors());
 
-process.env.SECRET_KEY = 'secret'
+process.env.SECRET_KEY = 'secret';
 
 /*
 user.route('/users/').get((req, res) => {
@@ -41,28 +42,71 @@ users.route("/register").post(async (req, res) => {
 
 
 
-//login
 
-users.route("/login").post((req, res) => {
-  User.findOne({email: req.body.email,})
-    .then((user) => {
-      if (user) {
-        if (bcrypt.compareSync(req.body.password, user.password)) {
-          let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
-            expiresIn: 1500,
-          });
-          res.send(token);
-        }
-      } 
-      else {
-        res.status(400).json({ error: "User does not exist" });
+/**
+ * login
+ */
+
+users.route("/login").post( (req, res) => {
+  [
+    check("email", "Please enter a valid email").isEmail(),
+    check("password", "Please enter a valid password").isLength({
+      min: 8,
+    }),
+  ],
+    async (req, res) => {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(422).json({
+          errors: errors.array(),
+        });
       }
-    })
-    .catch((err) => {
-      res.status(400).json({ error: err });
-    });
-});
+
+      const { email, password } = req.body;
+      try {
+        let user = await User.findOne({
+          email,
+        });
+        if (!user)
+          return res.status(400).json({
+            message: "User Does Not Exist",
+          });
+
+        const isMatch = await bcrypt.compareSync(password, user.password);
+        if (!isMatch)
+          return res.status(400).json({
+            message: "Incorrect Password !",
+          });
+
+        const payload = {
+          user: {
+            id: user.id,
+          },
+        };
+
+        jwt.sign(
+          payload,
+          process.env.SECRET_KEY,
+          {
+            expiresIn: 3600,
+          },
+          (err, token) => {
+            if (err) throw err;
+            res.status(200).json({ token, });
+          }
+        );
+      } catch (e) {
+        console.error(e);
+        res.status(500).json({
+          message: "Server Error",
+        });
+      }
+    };
+
+  }
+);
 
 
-module.exports = users
 
+module.exports = users;

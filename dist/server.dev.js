@@ -16,6 +16,7 @@ app.use(express.json());
 var uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
   useCreateIndex: true
 }); //create a connection and open it
 
