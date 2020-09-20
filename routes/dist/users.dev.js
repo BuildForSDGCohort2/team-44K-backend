@@ -11,7 +11,6 @@ var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 
 var _require = require("express-validator"),
-    check = _require.check,
     validationResult = _require.validationResult;
 
 var User = require('../models/User');
@@ -86,96 +85,95 @@ users.route("/register").post(function _callee(req, res) {
 });
 /**
  * login
+ * @method - POST
+ * @param - /login
+ * @description - user login
  */
 
-users.route("/login").post(function (req, res) {
-  [check("email", "Please enter a valid email").isEmail(), check("password", "Please enter a valid password").isLength({
-    min: 8
-  })], function _callee2(req, res) {
-    var errors, _req$body, email, password, user, isMatch, payload;
+users.route("/login").post(function _callee2(req, res) {
+  var errors, _req$body, email, password, user, isMatch, payload;
 
-    return regeneratorRuntime.async(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            errors = validationResult(req);
+  return regeneratorRuntime.async(function _callee2$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          errors = validationResult(req);
 
-            if (errors.isEmpty()) {
-              _context2.next = 3;
-              break;
-            }
-
-            return _context2.abrupt("return", res.status(422).json({
-              errors: errors.array()
-            }));
-
-          case 3:
-            _req$body = req.body, email = _req$body.email, password = _req$body.password;
-            _context2.prev = 4;
-            _context2.next = 7;
-            return regeneratorRuntime.awrap(User.findOne({
-              email: email
-            }));
-
-          case 7:
-            user = _context2.sent;
-
-            if (user) {
-              _context2.next = 10;
-              break;
-            }
-
-            return _context2.abrupt("return", res.status(400).json({
-              message: "User Does Not Exist"
-            }));
-
-          case 10:
-            _context2.next = 12;
-            return regeneratorRuntime.awrap(bcrypt.compareSync(password, user.password));
-
-          case 12:
-            isMatch = _context2.sent;
-
-            if (isMatch) {
-              _context2.next = 15;
-              break;
-            }
-
-            return _context2.abrupt("return", res.status(400).json({
-              message: "Incorrect Password !"
-            }));
-
-          case 15:
-            payload = {
-              user: {
-                id: user.id
-              }
-            };
-            jwt.sign(payload, process.env.SECRET_KEY, {
-              expiresIn: 3600
-            }, function (err, token) {
-              if (err) throw err;
-              res.status(200).json({
-                token: token
-              });
-            });
-            _context2.next = 23;
+          if (errors.isEmpty()) {
+            _context2.next = 3;
             break;
+          }
 
-          case 19:
-            _context2.prev = 19;
-            _context2.t0 = _context2["catch"](4);
-            console.error(_context2.t0);
-            res.status(500).json({
-              message: "Server Error"
+          return _context2.abrupt("return", res.status(422).json({
+            errors: errors.array()
+          }));
+
+        case 3:
+          _req$body = req.body, email = _req$body.email, password = _req$body.password;
+          _context2.prev = 4;
+          _context2.next = 7;
+          return regeneratorRuntime.awrap(User.findOne({
+            email: email
+          }));
+
+        case 7:
+          user = _context2.sent;
+
+          if (user) {
+            _context2.next = 10;
+            break;
+          }
+
+          return _context2.abrupt("return", res.status(400).json({
+            message: "User Does Not Exist"
+          }));
+
+        case 10:
+          _context2.next = 12;
+          return regeneratorRuntime.awrap(bcrypt.compareSync(password, user.password));
+
+        case 12:
+          isMatch = _context2.sent;
+
+          if (isMatch) {
+            _context2.next = 15;
+            break;
+          }
+
+          return _context2.abrupt("return", res.status(400).json({
+            message: "Incorrect Password !"
+          }));
+
+        case 15:
+          payload = {
+            user: {
+              id: user.id
+            }
+          };
+          jwt.sign(payload, process.env.SECRET_KEY, {
+            expiresIn: 9000
+          }, function (err, token) {
+            if (err) throw err;
+            res.status(200).json({
+              token: token
             });
+          });
+          _context2.next = 23;
+          break;
 
-          case 23:
-          case "end":
-            return _context2.stop();
-        }
+        case 19:
+          _context2.prev = 19;
+          _context2.t0 = _context2["catch"](4);
+          console.error(_context2.t0);
+          res.status(500).json({
+            message: "Server Error"
+          });
+
+        case 23:
+        case "end":
+          return _context2.stop();
       }
-    }, null, null, [[4, 19]]);
-  };
+    }
+  }, null, null, [[4, 19]]);
 });
 module.exports = users;

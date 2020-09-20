@@ -3,7 +3,7 @@ const users = express.Router();
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { check, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 
 const User = require('../models/User');
 users.use(cors());
@@ -45,17 +45,14 @@ users.route("/register").post(async (req, res) => {
 
 /**
  * login
+ * @method - POST
+ * @param - /login
+ * @description - user login
  */
 
-users.route("/login").post( (req, res) => {
-  [
-    check("email", "Please enter a valid email").isEmail(),
-    check("password", "Please enter a valid password").isLength({
-      min: 8,
-    }),
-  ],
-    async (req, res) => {
-      const errors = validationResult(req);
+users.route("/login").post( async (req, res) => {
+      
+  const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
         return res.status(422).json({
@@ -85,15 +82,10 @@ users.route("/login").post( (req, res) => {
           },
         };
 
-        jwt.sign(
-          payload,
-          process.env.SECRET_KEY,
-          {
-            expiresIn: 3600,
-          },
+        jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 9000 },
           (err, token) => {
             if (err) throw err;
-            res.status(200).json({ token, });
+            res.status(200).json({ token });
           }
         );
       } catch (e) {
@@ -102,10 +94,7 @@ users.route("/login").post( (req, res) => {
           message: "Server Error",
         });
       }
-    };
-
-  }
-);
+    });
 
 
 
