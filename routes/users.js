@@ -78,14 +78,24 @@ users.route("/login").post( async (req, res) => {
 
         const payload = {
           user: {
-            id: user.id,
+            id: user.id
           },
         };
 
-        jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: 9000 },
+      jwt.sign(
+          payload,
+          process.env.SECRET_KEY,
+          { expiresIn: 900000 },
+      /*
+      let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
+        expiresIn: 3600,
+      });
+
+      */
+
           (err, token) => {
             if (err) throw err;
-            res.status(200).json({ token });
+            res.status(200).json(token);
           }
         );
       } catch (e) {

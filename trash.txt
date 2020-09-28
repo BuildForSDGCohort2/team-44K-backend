@@ -174,3 +174,10 @@ const { email, password } = req.body;
 
   }
 );
+
+
+//My payload
+
+https://jwt.io/#debugger-io?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWY2NjE0MjQ3YTMxMDYwYmE3MjA2MWM1In0sImlhdCI6MTYwMTI5ODY5NSwiZXhwIjoxNjAxMzA3Njk1fQ.is-chPO1CFb3lAaNXyONvy1y7-_X7wOdjm3qxMZ66ho
+
+https://jwt.io/#debugger-io?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWY2NjE0MjQ3YTMxMDYwYmE3MjA2MWM1In0sImlhdCI6MTYwMTI5OTExOCwiZXhwIjoxNjAyMTk5MTE4fQ.nLs9h5IiPc0yqrvG7igGT3Bu7lXUwS8NH9aiwY8bXZw

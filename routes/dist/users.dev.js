@@ -151,12 +151,16 @@ users.route("/login").post(function _callee2(req, res) {
             }
           };
           jwt.sign(payload, process.env.SECRET_KEY, {
-            expiresIn: 9000
-          }, function (err, token) {
+            expiresIn: 900000
+          },
+          /*
+          let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
+            expiresIn: 3600,
+          });
+           */
+          function (err, token) {
             if (err) throw err;
-            res.status(200).json({
-              token: token
-            });
+            res.status(200).json(token);
           });
           _context2.next = 23;
           break;
