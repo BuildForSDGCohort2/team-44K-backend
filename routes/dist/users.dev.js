@@ -151,7 +151,7 @@ users.route("/login").post(function _callee2(req, res) {
             }
           };
           jwt.sign(payload, process.env.SECRET_KEY, {
-            expiresIn: 900000
+            expiresIn: 3000
           },
           /*
           let token = jwt.sign(user.dataValues, process.env.SECRET_KEY, {

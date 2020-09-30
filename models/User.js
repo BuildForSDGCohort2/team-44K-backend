@@ -28,9 +28,8 @@ const userSchemer = new Schema(
       trim: true,
     },
   },
-
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const User = mongoose.model('User', userSchemer)
-module.exports = User
+module.exports = User;
