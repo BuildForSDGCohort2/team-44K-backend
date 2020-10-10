@@ -8,11 +8,14 @@ var cors = require('cors');
 
 var mongoose = require('mongoose');
 
+var path = require("path");
+
 require('dotenv').config();
 
 var port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
+app.use(express["static"](path.join(__dirname, "client", "build")));
 var uri = process.env.ATLAS_URI;
 mongoose.connect(uri, {
   useNewUrlParser: true,
@@ -31,6 +34,9 @@ var userRouter = require('./routes/users'); //app.use('/signup', signupRouter)
 
 
 app.use('/users', userRouter);
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 app.listen(port, function () {
   console.log("Express server listening on port ".concat(port));
 });
